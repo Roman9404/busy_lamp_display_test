@@ -1,4 +1,5 @@
 #include"shift_register.h"
+#include "MBI5153.h"
 
 void shift_reg_gpio_init ()
 {
@@ -36,4 +37,5 @@ void line_shift (uint16_t delay)
     vTaskDelay(delay / portTICK_PERIOD_MS);
     gpio_set_level(SER,1);
     line_shift_clock(delay,15);
+    VertSync();
 }

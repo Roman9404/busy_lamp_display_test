@@ -7,8 +7,44 @@
 #include "shift_register.h"
 #include "MBI5153.h"
 
+#include "driver/ledc.h"
+#include "esp_err.h"
 
 #define BLINK_GPIO              2   //светодиод
+
+#define LEDC_TIMER              LEDC_TIMER_0
+#define LEDC_MODE               LEDC_LOW_SPEED_MODE
+#define LEDC_OUTPUT_IO          (13) // Define the output GPIO
+#define LEDC_CHANNEL            LEDC_CHANNEL_0
+#define LEDC_DUTY_RES           LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
+#define LEDC_DUTY               (4095) // Set duty to 50%. ((2 ** 13) - 1) * 50% = 4095
+#define LEDC_FREQUENCY          (1000) // Frequency in Hertz. Set frequency at 5 kHz
+
+static void example_ledc_init(void)
+{
+    // Prepare and then apply the LEDC PWM timer configuration
+    ledc_timer_config_t ledc_timer = {
+        .speed_mode       = LEDC_MODE,
+        .timer_num        = LEDC_TIMER,
+        .duty_resolution  = LEDC_DUTY_RES,
+        .freq_hz          = LEDC_FREQUENCY,  // Set output frequency at 5 kHz
+        .clk_cfg          = LEDC_AUTO_CLK
+    };
+    ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer));
+
+    // Prepare and then apply the LEDC PWM channel configuration
+    ledc_channel_config_t ledc_channel = {
+        .speed_mode     = LEDC_MODE,
+        .channel        = LEDC_CHANNEL,
+        .timer_sel      = LEDC_TIMER,
+        .intr_type      = LEDC_INTR_DISABLE,
+        .gpio_num       = LEDC_OUTPUT_IO,
+        .duty           = 0, // Set duty to 0%
+        .hpoint         = 0
+    };
+    ESP_ERROR_CHECK(ledc_channel_config(&ledc_channel));
+}
+
 
 bool latch = 0;
 bool reg1 = 0;
@@ -21,22 +57,35 @@ void app_main()
     /* Set the GPIO as a push/pull output */
     gpio_set_direction(BLINK_GPIO, GPIO_MODE_OUTPUT);
 
+    example_ledc_init();
+    // Set duty to 50%
+    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, LEDC_DUTY));
+    // Update duty to apply the new value
+    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+
     shift_reg_gpio_init ();
     MBI_gpio_init();
 
+    soft_reset();
+    vTaskDelay(10 / portTICK_PERIOD_MS);
+    PreActive();
+    vTaskDelay(10 / portTICK_PERIOD_MS);
+    mbi_configuration(ghost_elimination_OFF,line_num_1,gray_scale_14,gclk_multiplier_OFF,current_1);
+    vTaskDelay(10 / portTICK_PERIOD_MS);
+    mbi_configuration(ghost_elimination_OFF,line_num_1,gray_scale_14,gclk_multiplier_OFF,current_1);
+    vTaskDelay(10 / portTICK_PERIOD_MS);
+    reg1=1;
+    mbi_configuration(ghost_elimination_OFF,line_num_1,gray_scale_14,gclk_multiplier_OFF,current_1);
+    vTaskDelay(10 / portTICK_PERIOD_MS);
+    mbi_set_frame();
+
     while(1) 
     {
-       //line_shift(50); //вертикальная развертка
-       PreActive();
-       vTaskDelay(50 / portTICK_PERIOD_MS);
-       mbi_configuration(ghost_elimination_ON,line_num_16,gray_scale_14,gclk_multiplier_ON,current_1);
-       mbi_configuration(ghost_elimination_ON,line_num_16,gray_scale_14,gclk_multiplier_ON,current_1);
-       reg1=1;
-       mbi_configuration(ghost_elimination_ON,line_num_16,gray_scale_14,gclk_multiplier_ON,current_1);
-       //mbi_set_config();
+       line_shift(100); //вертикальная развертка
+       /*mbi_set_frame();
        gpio_set_level(BLINK_GPIO,1);
        vTaskDelay(3000 / portTICK_PERIOD_MS);
-       gpio_set_level(BLINK_GPIO,0);
+       gpio_set_level(BLINK_GPIO,0);*/
     }
 
 }
