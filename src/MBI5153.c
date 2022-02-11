@@ -4,17 +4,66 @@ extern bool latch;
 extern bool reg1;
 extern uint16_t config_reg;
 
-uint16_t line_1 [16] = {red, red, black, black, black, black, red, red, black, red, black, red, black, red, black, red};
+uint16_t red [256] = {l, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                      o, l, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                      o, o, l, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                      o, o, o, l, o, o, o, o, o, o, o, o, o, o, o, o,
+                      o, o, o, o, l, o, o, o, o, o, o, o, o, o, o, o,
+                      o, o, o, o, o, l, o, o, o, o, o, o, o, o, o, o,
+                      o, o, o, o, o, o, l, o, o, o, o, o, o, o, o, o,
+                      o, l, l, l, o, o, o, l, o, o, o, o, o, o, o, o,
+                      o, l, l, l, o, o, o, o, l, o, o, o, o, o, o, o,
+                      o, l, l, l, o, o, o, o, o, l, o, o, o, o, o, o,
+                      o, o, o, o, o, o, o, o, o, o, l, o, o, o, o, o,
+                      o, o, o, o, o, o, o, o, o, o, o, l, o, o, o, o,
+                      o, o, o, o, o, o, o, o, o, o, o, o, l, o, o, o,
+                      o, o, o, o, o, o, o, o, o, o, o, o, o, l, o, o,
+                      o, o, o, o, o, o, o, o, o, o, o, o, o, o, l, o,
+                      o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, l,};
+
+uint16_t green [256] = {o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, l,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, l, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, l, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, l, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, l, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, l, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, l, o, o, o, o, o, o,
+                        o, l, l, l, o, o, o, o, l, o, o, o, o, o, o, o,
+                        o, l, l, l, o, o, o, l, o, o, o, o, o, o, o, o,
+                        o, l, l, l, o, o, l, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, l, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, l, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, l, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, l, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, l, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        l, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,};
+
+uint16_t blue [256] = {o, o, o, o, o, o, o, l, o, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, o, l, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, l, o, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, o, l, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, l, o, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, o, l, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, l, o, o, o, o, o, o, o, o,
+                       o, l, l, l, o, o, o, o, l, o, o, o, o, o, o, o,
+                       o, l, l, l, o, o, o, l, o, o, o, o, o, o, o, o,
+                       o, l, l, l, o, o, o, o, l, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, l, o, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, o, l, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, l, o, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, o, l, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, l, o, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, o, l, o, o, o, o, o, o, o,};
 
 /*инициализация gpio для MBI5153*/
 void MBI_gpio_init()
 {
-    //gpio_pad_select_gpio(MBI_GCLK);
+    gpio_pad_select_gpio(MBI_GCLK);
     gpio_pad_select_gpio(MBI_LE);
     gpio_pad_select_gpio(MBI_DCLK);
     gpio_pad_select_gpio(MBI_SDI);
 
-    //gpio_set_direction(MBI_GCLK, GPIO_MODE_OUTPUT);
+    gpio_set_direction(MBI_GCLK, GPIO_MODE_OUTPUT);
     gpio_set_direction(MBI_LE, GPIO_MODE_OUTPUT);
     gpio_set_direction(MBI_DCLK, GPIO_MODE_OUTPUT);
     gpio_set_direction(MBI_SDI, GPIO_MODE_OUTPUT);
@@ -34,6 +83,19 @@ void mbi_clock (uint8_t delay,uint8_t clock)
         gpio_set_level(MBI_DCLK,0);
         vTaskDelay(delay / portTICK_PERIOD_MS);
     }
+}
+
+/* тактирование линии шкалы серого драйвера MBI5153*/
+void mbi_GCLK_clock (uint32_t GCLK_clock)
+{
+    while (GCLK_clock--)
+    {
+        gpio_set_level(MBI_DCLK,1);
+        gpio_set_level(MBI_GCLK,1);
+        gpio_set_level(MBI_GCLK,0);
+        gpio_set_level(MBI_DCLK,0);
+    }
+
 }
 
 /*настройка регистра конфигурации*/
@@ -136,14 +198,15 @@ void soft_reset()
 /*отсылает данные для 1 линии строчной развертки*/
 void mbi_set_frame()
 {
-    for (size_t i = 0; i < 16; i++)
+    for (size_t i = 0; i < 256; i++)
     {
-        mbi_set_data(line_1[i]);
-        mbi_set_data(line_1[i]);
+        mbi_set_data(blue[i]);
+        mbi_set_data(green[i]);
         latch=1;
-        mbi_set_data(line_1[i]);
-        vTaskDelay(10 / portTICK_PERIOD_MS);
+        mbi_set_data(red[i]);
+        //vTaskDelay(10 / portTICK_PERIOD_MS);
     }
+
     mbi_clock(5,50);
     VertSync();
 }

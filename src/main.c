@@ -12,13 +12,13 @@
 
 #define BLINK_GPIO              2   //светодиод
 
-#define LEDC_TIMER              LEDC_TIMER_0
+#define LEDC_TIMER              LEDC_TIMER_1
 #define LEDC_MODE               LEDC_LOW_SPEED_MODE
 #define LEDC_OUTPUT_IO          (13) // Define the output GPIO
-#define LEDC_CHANNEL            LEDC_CHANNEL_0
+#define LEDC_CHANNEL            LEDC_CHANNEL_1
 #define LEDC_DUTY_RES           LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
 #define LEDC_DUTY               (4095) // Set duty to 50%. ((2 ** 13) - 1) * 50% = 4095
-#define LEDC_FREQUENCY          (1000) // Frequency in Hertz. Set frequency at 5 kHz
+#define LEDC_FREQUENCY          (100) // Frequency in Hertz. Set frequency at 5 kHz
 
 static void example_ledc_init(void)
 {
@@ -67,17 +67,15 @@ void app_main()
     MBI_gpio_init();
 
     soft_reset();
-    vTaskDelay(10 / portTICK_PERIOD_MS);
     PreActive();
-    vTaskDelay(10 / portTICK_PERIOD_MS);
-    mbi_configuration(ghost_elimination_OFF,line_num_1,gray_scale_14,gclk_multiplier_OFF,current_1);
-    vTaskDelay(10 / portTICK_PERIOD_MS);
-    mbi_configuration(ghost_elimination_OFF,line_num_1,gray_scale_14,gclk_multiplier_OFF,current_1);
-    vTaskDelay(10 / portTICK_PERIOD_MS);
+    mbi_configuration(ghost_elimination_ON,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_1);
+    mbi_configuration(ghost_elimination_ON,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_1);
     reg1=1;
-    mbi_configuration(ghost_elimination_OFF,line_num_1,gray_scale_14,gclk_multiplier_OFF,current_1);
-    vTaskDelay(10 / portTICK_PERIOD_MS);
+    mbi_configuration(ghost_elimination_ON,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_1);
     mbi_set_frame();
+    //VertSync();
+
+    tg0_timer0_init();      
 
     while(1) 
     {
