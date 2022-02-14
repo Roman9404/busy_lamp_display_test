@@ -73,15 +73,15 @@ void MBI_gpio_init()
 }
 
 /* тактирование линии данных драйвера MBI5153*/
-void mbi_clock (uint8_t delay,uint8_t clock)
+void mbi_clock (uint8_t clock)
 {
     while (clock--)
     {
-        vTaskDelay(delay / portTICK_PERIOD_MS);
+        //vTaskDelay(delay / portTICK_PERIOD_MS);
         gpio_set_level(MBI_DCLK,1);
-        vTaskDelay(delay / portTICK_PERIOD_MS);
+        ets_delay_us(clock_delay);
         gpio_set_level(MBI_DCLK,0);
-        vTaskDelay(delay / portTICK_PERIOD_MS);
+        ets_delay_us(clock_delay);
     }
 }
 
@@ -90,10 +90,12 @@ void mbi_GCLK_clock (uint32_t GCLK_clock)
 {
     while (GCLK_clock--)
     {
-        gpio_set_level(MBI_DCLK,1);
+        //gpio_set_level(MBI_DCLK,1);
         gpio_set_level(MBI_GCLK,1);
+        ets_delay_us(clock_delay);
         gpio_set_level(MBI_GCLK,0);
-        gpio_set_level(MBI_DCLK,0);
+        ets_delay_us(clock_delay);
+        //gpio_set_level(MBI_DCLK,0);
     }
 
 }
@@ -124,13 +126,13 @@ void mbi_set_config (uint16_t config)
         {
             gpio_set_level(MBI_LE,1);
             gpio_set_level(MBI_SDI,config_bit[i-1]);
-            mbi_clock(5,1);
+            mbi_clock(1);
             //gpio_set_level(MBI_SDI,0);            
         }
         else
         {
             gpio_set_level(MBI_SDI,config_bit[i-1]);
-            mbi_clock(5,1);
+            mbi_clock(1);
             //gpio_set_level(MBI_SDI,0);
         } 
     }
@@ -144,7 +146,7 @@ void mbi_set_data (uint16_t data)
 {
     bool data_bit[16] = {0};
     int data_mask = 0x1;
-    printf("test data = %d \n", data);
+   // printf("test data = %d \n", data);
     for (size_t i = 0; i < 16; i++)  //парсит байт в булевый массив побитно
     {
         data_bit[i] = data & (data_mask<<i);
@@ -156,7 +158,7 @@ void mbi_set_data (uint16_t data)
         {
             gpio_set_level(MBI_LE,1);
             gpio_set_level(MBI_SDI,data_bit[i-1]);
-            mbi_clock(5,1);
+            mbi_clock(1);
             gpio_set_level(MBI_SDI,0);
             gpio_set_level(MBI_LE,0);
             latch = 0;
@@ -164,7 +166,7 @@ void mbi_set_data (uint16_t data)
         else
         {
             gpio_set_level(MBI_SDI,data_bit[i-1]);
-            mbi_clock(5,1);
+            mbi_clock(1);
             gpio_set_level(MBI_SDI,0);
         } 
     }
@@ -175,7 +177,7 @@ void mbi_set_data (uint16_t data)
 void PreActive ()
 {
     gpio_set_level(MBI_LE,1);
-    mbi_clock(5,14);
+    mbi_clock(14);
     gpio_set_level(MBI_LE,0);
 }
 
@@ -183,7 +185,7 @@ void PreActive ()
 void VertSync ()
 {
     gpio_set_level(MBI_LE,1);
-    mbi_clock(5,2);
+    mbi_clock(2);
     gpio_set_level(MBI_LE,0);
 }
 
@@ -191,7 +193,7 @@ void VertSync ()
 void soft_reset()
 {
     gpio_set_level(MBI_LE,1);
-    mbi_clock(5,10);
+    mbi_clock(10);
     gpio_set_level(MBI_LE,0); 
 }
 
@@ -207,6 +209,6 @@ void mbi_set_frame()
         //vTaskDelay(10 / portTICK_PERIOD_MS);
     }
 
-    mbi_clock(5,50);
+    mbi_clock(50);
     VertSync();
 }

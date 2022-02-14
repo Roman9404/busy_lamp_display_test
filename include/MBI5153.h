@@ -19,12 +19,14 @@
 #define line_num_1              0   //количество линий 1
 #define current_1               15  //ток на светодиоде
 
+#define clock_delay             20
+
 #define l                   65532  
 #define o                   0 
 
 
 void MBI_gpio_init();
-void mbi_clock (uint8_t delay,uint8_t clock);
+void mbi_clock (uint8_t clock);
 void mbi_GCLK_clock (uint32_t GCLK_clock);
 void mbi_configuration(uint8_t ghost_elimination, uint8_t line_num, uint8_t gray_scale, uint8_t gclk_multiplier,uint8_t current);
 void mbi_set_config (uint16_t config);
