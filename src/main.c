@@ -14,7 +14,7 @@
 
 #define LEDC_TIMER              LEDC_TIMER_1
 #define LEDC_MODE               LEDC_LOW_SPEED_MODE
-#define LEDC_OUTPUT_IO          (13) // Define the output GPIO
+#define LEDC_OUTPUT_IO          (23) // Define the output GPIO
 #define LEDC_CHANNEL            LEDC_CHANNEL_1
 #define LEDC_DUTY_RES           LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
 #define LEDC_DUTY               (4095) // Set duty to 50%. ((2 ** 13) - 1) * 50% = 4095
@@ -57,32 +57,32 @@ void app_main()
     /* Set the GPIO as a push/pull output */
     gpio_set_direction(BLINK_GPIO, GPIO_MODE_OUTPUT);
 
-    example_ledc_init();
+//    example_ledc_init();
     // Set duty to 50%
-    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, LEDC_DUTY));
+//    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, LEDC_DUTY));
     // Update duty to apply the new value
-    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+//    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+
+    //tg0_timer0_init();
 
     shift_reg_gpio_init ();
     MBI_gpio_init();
 
     soft_reset();
     PreActive();
-    mbi_configuration(ghost_elimination_ON,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_1);
-    mbi_configuration(ghost_elimination_ON,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_1);
+    mbi_configuration(ghost_elimination_OFF,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_1);
+    mbi_configuration(ghost_elimination_OFF,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_1);
     reg1=1;
-    mbi_configuration(ghost_elimination_ON,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_1);
+    mbi_configuration(ghost_elimination_OFF,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_1);
     mbi_set_frame();
     VertSync();
     VertSync();
 
-
-
-    //tg0_timer0_init();      
+    tg0_timer0_init();      
 
     while(1) 
     {
-       line_shift(100000); //вертикальная развертка
+       //line_shift(100000); //вертикальная развертка
     }
 
 }

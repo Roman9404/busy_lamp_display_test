@@ -70,7 +70,7 @@ void tg0_timer0_init()
     /*Load counter value */
     timer_set_counter_value(timer_group, timer_idx, 0x00000000ULL);// 0x00000000ULL);
     /*Set alarm value*/
-    timer_set_alarm_value(timer_group, timer_idx, 100); //(TIMER_INTERVAL0_SEC * TIMER_SCALE) - TIMER_FINE_ADJ); количество тиков до прерывания
+    timer_set_alarm_value(timer_group, timer_idx, 20); //(TIMER_INTERVAL0_SEC * TIMER_SCALE) - TIMER_FINE_ADJ); количество тиков до прерывания
     /*Enable timer interrupt*/
     timer_enable_intr(timer_group, timer_idx);
     /*Set ISR handler*/
@@ -83,41 +83,45 @@ void tg0_timer0_init()
 bool io1 = 1;
 bool io2 = 1;
 int line_count = 0;
-int frame_count = 0;
+int frame_count = 16;
 void IRAM_ATTR timer_group0_isr(void *para)
 {// timer group 0, ISR
     int timer_idx = (int) para;
     uint32_t intr_status = TIMERG0.int_st_timers.val;
     if((intr_status & BIT(timer_idx)) && timer_idx == TIMER_0) 
     {
-        //TIMERG0.hw_timer[timer_idx].update = 1;
-        //TIMERG0.int_clr_timers.t0 = 1;
-        //TIMERG0.hw_timer[timer_idx].config.alarm_en = 1;
-
-        timer_pause(TIMER_GROUP_0, timer_idx);
-          
-        gpio_set_level (timer_test_1, io1); //выйдет на GCLK для драйверов 512 тиков и обновление линии.
-        io1= !io1;
-        line_count++; //счетчик тиков 
-
-        if (line_count==1024) //переход на следующую линию по вертикали
-        {
-            gpio_set_level (timer_test_2, io2);
-            io2= !io2;
-            frame_count++;
-            if (frame_count==15) //через каждые 16 линий запускать новый кадр
-            {
-                frame_count = 0;
-            }
-
-           line_count = 0;
-        }
-          
-
         TIMERG0.hw_timer[timer_idx].update = 1;
         TIMERG0.int_clr_timers.t0 = 1;
         TIMERG0.hw_timer[timer_idx].config.alarm_en = 1;
-        timer_set_counter_value(TIMER_GROUP_0, timer_idx, 0x00000000ULL);
+
+        timer_pause(TIMER_GROUP_0, timer_idx);
+          
+        gpio_set_level (MBI_GCLK, io1); //выйдет на GCLK для драйверов 512 тиков и обновление линии.
+        io1= !io1;
+        line_count++; //счетчик тиков 
+
+        if (line_count==1026) //переход на следующую линию по вертикали
+        {
+            gpio_set_level (timer_test_2, io2);
+            io2= !io2;
+            line_count = 0;
+            frame_count--;
+
+            if (frame_count==0)
+            {
+                gpio_set_level(SER,0);
+                frame_count=16;
+            }
+            
+            gpio_set_level(SRCLK,1);
+            gpio_set_level(RCLK,0);
+            ets_delay_us(10);
+            gpio_set_level(SRCLK,0);
+            gpio_set_level(RCLK,1);
+            gpio_set_level(SER,1);
+        } 
+          
+        //timer_set_counter_value(TIMER_GROUP_0, timer_idx, 0x00000000ULL);
         timer_start(TIMER_GROUP_0, timer_idx);
     }
 }

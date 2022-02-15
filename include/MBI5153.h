@@ -4,7 +4,7 @@
 #include "driver/gpio.h"
 #include "sdkconfig.h"
 
-#define MBI_GCLK                23  //тактирование уровней серого
+#define MBI_GCLK                13  //тактирование уровней серого
 #define MBI_LE                  12  //данные/команда
 #define MBI_DCLK                14  //тактирование линии данных
 #define MBI_SDI                 27  //данные
