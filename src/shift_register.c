@@ -26,14 +26,14 @@ void line_shift_clock (uint16_t delay, uint8_t num)
 {
     for (size_t i = 0; i < num; i++)
     {    
-        ets_delay_us(100);
+        ets_delay_us(delay);
         gpio_set_level(SRCLK,1);
         gpio_set_level(RCLK,0);
-        ets_delay_us(100);
+        ets_delay_us(delay);
         gpio_set_level(SRCLK,0);
         gpio_set_level(RCLK,1);
 
-       // VertSync();
+        //VertSync();
        // mbi_GCLK_clock (513);
         
     }
@@ -48,7 +48,7 @@ void line_shift (uint16_t delay)
     //vTaskDelay(delay / portTICK_PERIOD_MS);
     gpio_set_level(SER,1);
     line_shift_clock(delay,15);
-    VertSync();
+   // VertSync();
 }
 
 /*настройка таймера*/

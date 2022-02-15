@@ -57,7 +57,11 @@ void app_main()
     /* Set the GPIO as a push/pull output */
     gpio_set_direction(BLINK_GPIO, GPIO_MODE_OUTPUT);
 
-
+    example_ledc_init();
+    // Set duty to 50%
+    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, LEDC_DUTY));
+    // Update duty to apply the new value
+    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
 
     shift_reg_gpio_init ();
     MBI_gpio_init();
@@ -69,23 +73,16 @@ void app_main()
     reg1=1;
     mbi_configuration(ghost_elimination_ON,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_1);
     mbi_set_frame();
-    //VertSync();
+    VertSync();
+    VertSync();
 
-    example_ledc_init();
-    // Set duty to 50%
-    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, LEDC_DUTY));
-    // Update duty to apply the new value
-    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+
 
     //tg0_timer0_init();      
 
     while(1) 
     {
-       line_shift(100); //вертикальная развертка
-       /*mbi_set_frame();
-       gpio_set_level(BLINK_GPIO,1);
-       vTaskDelay(3000 / portTICK_PERIOD_MS);
-       gpio_set_level(BLINK_GPIO,0);*/
+       line_shift(100000); //вертикальная развертка
     }
 
 }

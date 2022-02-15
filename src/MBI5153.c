@@ -77,7 +77,6 @@ void mbi_clock (uint8_t clock)
 {
     while (clock--)
     {
-        //vTaskDelay(delay / portTICK_PERIOD_MS);
         gpio_set_level(MBI_DCLK,1);
         ets_delay_us(clock_delay);
         gpio_set_level(MBI_DCLK,0);
@@ -90,12 +89,10 @@ void mbi_GCLK_clock (uint32_t GCLK_clock)
 {
     while (GCLK_clock--)
     {
-        //gpio_set_level(MBI_DCLK,1);
         gpio_set_level(MBI_GCLK,1);
         ets_delay_us(clock_delay);
         gpio_set_level(MBI_GCLK,0);
         ets_delay_us(clock_delay);
-        //gpio_set_level(MBI_DCLK,0);
     }
 
 }
@@ -113,11 +110,9 @@ void mbi_set_config (uint16_t config)
 {
     bool config_bit[16] = {0};
     int data_mask = 0x1;
-    //printf("test data = %x \n", config);
     for (size_t i = 0; i < 16; i++)  //парсит байт в булевый массив побитно
     {
         config_bit[i] = config & (data_mask<<i);
-        //printf("data mask = %d config bit[%d] = %d \n",(data_mask<<i),i,config_bit[i]);
     }
     
     for (size_t i = 16; i > 0; i--)  //отсылает данные на ногу контроллера из булевого массива
@@ -126,14 +121,12 @@ void mbi_set_config (uint16_t config)
         {
             gpio_set_level(MBI_LE,1);
             gpio_set_level(MBI_SDI,config_bit[i-1]);
-            mbi_clock(1);
-            //gpio_set_level(MBI_SDI,0);            
+            mbi_clock(1);           
         }
         else
         {
             gpio_set_level(MBI_SDI,config_bit[i-1]);
             mbi_clock(1);
-            //gpio_set_level(MBI_SDI,0);
         } 
     }
     gpio_set_level(MBI_LE,0);
@@ -146,11 +139,9 @@ void mbi_set_data (uint16_t data)
 {
     bool data_bit[16] = {0};
     int data_mask = 0x1;
-   // printf("test data = %d \n", data);
     for (size_t i = 0; i < 16; i++)  //парсит байт в булевый массив побитно
     {
         data_bit[i] = data & (data_mask<<i);
-       // printf("data mask = %d data bit[%d] = %d \n",(data_mask<<i),i,data_bit[i]);
     }
     for (size_t i = 16; i > 0; i--)  //отсылает данные на ногу контроллера из булевого массива
     {
@@ -206,7 +197,6 @@ void mbi_set_frame()
         mbi_set_data(green[i]);
         latch=1;
         mbi_set_data(red[i]);
-        //vTaskDelay(10 / portTICK_PERIOD_MS);
     }
 
     mbi_clock(50);
