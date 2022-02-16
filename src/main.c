@@ -50,6 +50,11 @@ bool latch = 0;
 bool reg1 = 0;
 uint16_t config_reg = 0;
 
+int line_count = 0;
+int frame_count = 16;
+
+bool flag_razvertka = 0;
+
 void app_main()
 {
     gpio_pad_select_gpio(BLINK_GPIO);
@@ -75,14 +80,15 @@ void app_main()
     reg1=1;
     mbi_configuration(ghost_elimination_OFF,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_1);
     mbi_set_frame();
-    VertSync();
-    VertSync();
+    //VertSync();
+    //VertSync();
 
     tg0_timer0_init();      
 
     while(1) 
     {
-       //line_shift(100000); //вертикальная развертка
+        //if (flag_razvertka==1) razvertka();
+        //line_shift(100000); //вертикальная развертка
     }
 
 }

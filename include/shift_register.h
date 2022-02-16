@@ -19,9 +19,13 @@
 #define timer_test_1            33
 #define timer_test_2            32
 
+#define timer_group    TIMER_GROUP_0        //группа таймеров
+#define timer_idx      TIMER_0              //номер таймера
 #define TIMER_INTR_SEL TIMER_INTR_LEVEL  /*!< Timer level interrupt */
-#define TIMER_GROUP    TIMER_GROUP_0     /*!< Test on timer group 1 */
-#define TIMER_DIVIDER   10               /*!< Hardware timer clock divider, 80 to get 1MHz clock to timer предделитель */
+#define TIMER_DIVIDER   3               /*!< Hardware timer clock divider, 80 to get 1MHz clock to timer предделитель */
+
+
+
 #define TIMER_SCALE    (TIMER_BASE_CLK / TIMER_DIVIDER)  /*!< used to calculate counter value */
 #define TIMER_FINE_ADJ   (0*(TIMER_BASE_CLK / TIMER_DIVIDER)/1000000) /*!< used to compensate alarm value */
 #define TIMER_INTERVAL0_SEC   (0.01)   /*!< test interval for timer 0 */
