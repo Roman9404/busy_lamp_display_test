@@ -7,11 +7,12 @@
 #include "shift_register.h"
 #include "MBI5153.h"
 
-#include "driver/ledc.h"
-#include "esp_err.h"
+//#include "driver/ledc.h"
+//#include "esp_err.h"
 
 #define BLINK_GPIO              2   //светодиод
 
+/*
 #define LEDC_TIMER              LEDC_TIMER_1
 #define LEDC_MODE               LEDC_LOW_SPEED_MODE
 #define LEDC_OUTPUT_IO          (23) // Define the output GPIO
@@ -44,16 +45,11 @@ static void example_ledc_init(void)
     };
     ESP_ERROR_CHECK(ledc_channel_config(&ledc_channel));
 }
-
+*/
 
 bool latch = 0;
 bool reg1 = 0;
 uint16_t config_reg = 0;
-
-int line_count = 0;
-int frame_count = 16;
-
-bool flag_razvertka = 0;
 
 void app_main()
 {
@@ -68,26 +64,22 @@ void app_main()
     // Update duty to apply the new value
 //    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
 
-    //tg0_timer0_init();
-
     shift_reg_gpio_init ();
     MBI_gpio_init();
-
+    soft_reset();
+    vTaskDelay(200 / portTICK_RATE_MS);
     soft_reset();
     PreActive();
     mbi_configuration(ghost_elimination_OFF,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_1);
     mbi_configuration(ghost_elimination_OFF,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_1);
     reg1=1;
-    mbi_configuration(ghost_elimination_OFF,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_1);
+    mbi_configuration(ghost_elimination_OFF,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_2);
     mbi_set_frame();
-    //VertSync();
-    //VertSync();
 
     tg0_timer0_init();      
 
     while(1) 
     {
-        //if (flag_razvertka==1) razvertka();
         //line_shift(100000); //вертикальная развертка
     }
 

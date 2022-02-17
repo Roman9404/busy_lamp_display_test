@@ -18,6 +18,7 @@
 #define line_num_16             15  //количество линий 16
 #define line_num_1              0   //количество линий 1
 #define current_1               15  //ток на светодиоде
+#define current_2               31  //ток на светодиоде
 
 #define clock_delay             20
 

@@ -4,6 +4,7 @@ extern bool latch;
 extern bool reg1;
 extern uint16_t config_reg;
 
+/*
 uint16_t red [256] = {l, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
                       o, l, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
                       o, o, l, o, o, o, o, o, o, o, o, o, o, o, o, o,
@@ -54,6 +55,58 @@ uint16_t blue [256] = {o, o, o, o, o, o, o, l, o, o, o, o, o, o, o, o,
                        o, o, o, o, o, o, o, o, l, o, o, o, o, o, o, o,
                        o, o, o, o, o, o, o, l, o, o, o, o, o, o, o, o,
                        o, o, o, o, o, o, o, o, l, o, o, o, o, o, o, o,};
+*/
+
+uint16_t red [256] = {o, l, o, o, o, o, o, o, o, o, o, o, o, o, l, l,
+                      o, l, o, o, o, o, o, o, o, o, o, o, o, o, l, o,
+                      o, l, o, o, o, o, o, o, o, o, o, o, l, l, l, o,
+                      o, o, o, o, o, o, o, o, o, o, o, o, l, o, l, o,
+                      o, l, o, o, o, o, o, o, o, o, o, o, l, l, l, o,
+                      o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                      o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                      o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                      o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                      o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                      o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                      o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                      o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                      o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                      o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                      o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,};
+
+uint16_t green [256] = {o, l, o, o, o, o, o, o, l, o, l, o, o, o, o, o,
+                        o, l, o, o, o, o, o, o, l, o, l, o, o, o, o, o,
+                        o, l, o, o, o, o, o, o, l, l, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, l, o, o, o, o, o, o,
+                        o, l, o, o, o, o, o, o, o, o, l, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,};
+
+uint16_t blue [256] = {o, l, o, o, o, l, l, o, o, o, o, o, o, o, o, o,
+                       o, l, o, o, o, l, o, o, o, o, o, o, o, o, o, o,
+                       o, l, o, l, l, l, o, o, o, o, o, o, o, o, o, o,
+                       o, o, o, l, o, l, o, o, o, o, o, o, o, o, o, o,
+                       o, l, o, l, l, l, o, o, o, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,};
 
 /*инициализация gpio для MBI5153*/
 void MBI_gpio_init()
@@ -78,8 +131,10 @@ void mbi_clock (uint8_t clock)
     while (clock--)
     {
         gpio_set_level(MBI_DCLK,1);
+        gpio_set_level(MBI_GCLK,1);
         ets_delay_us(clock_delay);
         gpio_set_level(MBI_DCLK,0);
+        gpio_set_level(MBI_GCLK,0);
         ets_delay_us(clock_delay);
     }
 }
