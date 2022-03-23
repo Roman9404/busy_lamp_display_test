@@ -20,7 +20,7 @@
 #define current_1               15  //ток на светодиоде
 #define current_2               31  //ток на светодиоде
 
-#define clock_delay             20
+#define clock_delay             0
 
 #define l                   65532  
 #define o                   0 
@@ -35,4 +35,4 @@ void mbi_set_data (uint16_t data);
 void PreActive ();
 void VertSync ();
 void soft_reset();
-void mbi_set_frame();
+void mbi_set_frame(uint16_t red [256],uint16_t green [256], uint16_t blue [256]);

@@ -1,6 +1,15 @@
 #include"shift_register.h"
 #include "MBI5153.h"
 
+extern uint16_t red_1[256];
+extern uint16_t green_1[256];
+extern uint16_t blue_1[256];
+
+extern uint16_t red_2[256];
+extern uint16_t green_2[256];
+extern uint16_t blue_2[256];
+
+
 void shift_reg_gpio_init ()
 {
     gpio_pad_select_gpio(SER);
@@ -70,34 +79,46 @@ void tg0_timer0_init()
 
 /*прерывание таймера*/
 bool io1 = 1;
+bool io2 = 1;
 
-int line_count = 0;
-int frame_count = 16;
+int GCLK_count = 0;     //счетчик тиков для MBI5153
+int line_count = 16;    //счетчик линий на дисплее
+int frame_count = 0;    //счетчик кадров
 
 void IRAM_ATTR timer_group0_isr(void *para)
 {
-    TIMERG0.hw_timer[timer_idx].update = 1;
-    TIMERG0.int_clr_timers.t0 = 1;
-    TIMERG0.hw_timer[timer_idx].config.alarm_en = 1;
+    //timer_group_clr_intr_status_in_isr(timer_group, timer_idx);
+    //timer_group_enable_alarm_in_isr(timer_group, timer_idx);
           
     gpio_set_level (MBI_GCLK, io1); //выйдет на GCLK для драйверов 512 тиков и обновление линии.
     io1= !io1;
-    line_count++; //счетчик тиков        
+    GCLK_count++; //счетчик тиков        
 
-    if (line_count==1026) //переход на следующую линию по вертикали
+    if (GCLK_count==1026) //переход на следующую линию по вертикали
     {
-        line_count = 0;
-        frame_count--;
+        GCLK_count = 0;
+        line_count--;
 
-        if (frame_count==0)
+        if (line_count==0)//запуск кадра заново с верхней линии
         {
             gpio_set_level(SER,0);
-            frame_count=16;
+            line_count=16;
+            frame_count++;
+
+            if (frame_count==70)
+            {
+                gpio_set_level(OE,1);
+                if(io2==1) mbi_set_frame(red_2, green_2, blue_2);
+                if(io2==0) mbi_set_frame(red_1, green_1, blue_1);
+                gpio_set_level(OE,0);
+                io2= !io2;
+                frame_count=0;
+            }
         }
             
         gpio_set_level(SRCLK,1);
         gpio_set_level(RCLK,0);
-        ets_delay_us(5);
+        ets_delay_us(4);
         gpio_set_level(SRCLK,0);
         gpio_set_level(RCLK,1);
         gpio_set_level(SER,1);

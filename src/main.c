@@ -51,6 +51,15 @@ bool latch = 0;
 bool reg1 = 0;
 uint16_t config_reg = 0;
 
+extern uint16_t red_1[256];
+extern uint16_t green_1[256];
+extern uint16_t blue_1[256];
+
+extern uint16_t red_2[256];
+extern uint16_t green_2[256];
+extern uint16_t blue_2[256];
+
+
 void app_main()
 {
     gpio_pad_select_gpio(BLINK_GPIO);
@@ -73,14 +82,23 @@ void app_main()
     mbi_configuration(ghost_elimination_OFF,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_1);
     mbi_configuration(ghost_elimination_OFF,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_1);
     reg1=1;
-    mbi_configuration(ghost_elimination_OFF,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_2);
-    mbi_set_frame();
+    mbi_configuration(ghost_elimination_OFF,line_num_16,gray_scale_14,gclk_multiplier_OFF,current_2); 
+    mbi_set_frame(red_1, green_1, blue_1);
 
     tg0_timer0_init();      
 
     while(1) 
     {
+       
         //line_shift(100000); //вертикальная развертка
+        //soft_reset();
+        //gpio_set_level(BLINK_GPIO,1);
+        //mbi_set_frame(red_2, green_2, blue_2);
+        //vTaskDelay(3000 / portTICK_PERIOD_MS);
+        //soft_reset();
+        //gpio_set_level(BLINK_GPIO,0);
+        //mbi_set_frame(red_1, green_1, blue_1);
+        //vTaskDelay(3000 / portTICK_PERIOD_MS);
     }
 
 }

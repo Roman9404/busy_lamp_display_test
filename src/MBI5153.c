@@ -1,67 +1,16 @@
 #include"MBI5153.h"
+#include"shift_register.h"
 
 extern bool latch;
 extern bool reg1;
 extern uint16_t config_reg;
 
-/*
-uint16_t red [256] = {l, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
-                      o, l, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
-                      o, o, l, o, o, o, o, o, o, o, o, o, o, o, o, o,
-                      o, o, o, l, o, o, o, o, o, o, o, o, o, o, o, o,
-                      o, o, o, o, l, o, o, o, o, o, o, o, o, o, o, o,
-                      o, o, o, o, o, l, o, o, o, o, o, o, o, o, o, o,
-                      o, o, o, o, o, o, l, o, o, o, o, o, o, o, o, o,
-                      o, l, l, l, o, o, o, l, o, o, o, o, o, o, o, o,
-                      o, l, l, l, o, o, o, o, l, o, o, o, o, o, o, o,
-                      o, l, l, l, o, o, o, o, o, l, o, o, o, o, o, o,
-                      o, o, o, o, o, o, o, o, o, o, l, o, o, o, o, o,
-                      o, o, o, o, o, o, o, o, o, o, o, l, o, o, o, o,
-                      o, o, o, o, o, o, o, o, o, o, o, o, l, o, o, o,
-                      o, o, o, o, o, o, o, o, o, o, o, o, o, l, o, o,
-                      o, o, o, o, o, o, o, o, o, o, o, o, o, o, l, o,
-                      o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, l,};
 
-uint16_t green [256] = {o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, l,
-                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, l, o,
-                        o, o, o, o, o, o, o, o, o, o, o, o, o, l, o, o,
-                        o, o, o, o, o, o, o, o, o, o, o, o, l, o, o, o,
-                        o, o, o, o, o, o, o, o, o, o, o, l, o, o, o, o,
-                        o, o, o, o, o, o, o, o, o, o, l, o, o, o, o, o,
-                        o, o, o, o, o, o, o, o, o, l, o, o, o, o, o, o,
-                        o, l, l, l, o, o, o, o, l, o, o, o, o, o, o, o,
-                        o, l, l, l, o, o, o, l, o, o, o, o, o, o, o, o,
-                        o, l, l, l, o, o, l, o, o, o, o, o, o, o, o, o,
-                        o, o, o, o, o, l, o, o, o, o, o, o, o, o, o, o,
-                        o, o, o, o, l, o, o, o, o, o, o, o, o, o, o, o,
-                        o, o, o, l, o, o, o, o, o, o, o, o, o, o, o, o,
-                        o, o, l, o, o, o, o, o, o, o, o, o, o, o, o, o,
-                        o, l, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
-                        l, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,};
-
-uint16_t blue [256] = {o, o, o, o, o, o, o, l, o, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, o, l, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, l, o, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, o, l, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, l, o, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, o, l, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, l, o, o, o, o, o, o, o, o,
-                       o, l, l, l, o, o, o, o, l, o, o, o, o, o, o, o,
-                       o, l, l, l, o, o, o, l, o, o, o, o, o, o, o, o,
-                       o, l, l, l, o, o, o, o, l, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, l, o, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, o, l, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, l, o, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, o, l, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, l, o, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, o, l, o, o, o, o, o, o, o,};
-*/
-
-uint16_t red [256] = {o, l, o, o, o, o, o, o, o, o, o, o, o, o, l, l,
-                      o, l, o, o, o, o, o, o, o, o, o, o, o, o, l, o,
-                      o, l, o, o, o, o, o, o, o, o, o, o, l, l, l, o,
-                      o, o, o, o, o, o, o, o, o, o, o, o, l, o, l, o,
-                      o, l, o, o, o, o, o, o, o, o, o, o, l, l, l, o,
+uint16_t red_1 [256] = {o, l, o, o, o, l, l, o, l, o, l, o, o, o, l, l,
+                      o, l, o, o, o, l, o, o, l, o, l, o, o, o, l, o,
+                      o, l, o, l, l, l, o, o, l, l, o, o, l, l, l, o,
+                      o, o, o, l, o, l, o, o, o, l, o, o, l, o, l, o,
+                      o, l, o, l, l, l, o, o, o, o, l, o, l, l, l, o,
                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
@@ -74,11 +23,28 @@ uint16_t red [256] = {o, l, o, o, o, o, o, o, o, o, o, o, o, o, l, l,
                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,};
 
-uint16_t green [256] = {o, l, o, o, o, o, o, o, l, o, l, o, o, o, o, o,
-                        o, l, o, o, o, o, o, o, l, o, l, o, o, o, o, o,
-                        o, l, o, o, o, o, o, o, l, l, o, o, o, o, o, o,
-                        o, o, o, o, o, o, o, o, o, l, o, o, o, o, o, o,
-                        o, l, o, o, o, o, o, o, o, o, l, o, o, o, o, o,
+uint16_t green_1 [256] = {o, l, o, o, o, l, l, o, l, o, l, o, o, o, l, l,
+                        o, l, o, o, o, l, o, o, l, o, l, o, o, o, l, o,
+                        o, l, o, l, l, l, o, o, l, l, o, o, l, l, l, o,
+                        o, o, o, l, o, l, o, o, o, l, o, o, l, o, l, o,
+                        o, l, o, l, l, l, o, o, o, o, l, o, l, l, l, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, l, l, o, o, l, l, o, o, o,
+                        o, o, o, o, l, o, l, l, l, l, o, o, o, l, o, o,
+                        o, o, o, l, o, o, l, l, l, l, l, o, o, l, o, o,
+                        o, o, o, l, l, o, o, l, l, l, l, o, l, l, o, o,
+                        o, o, o, o, l, l, l, l, l, l, l, l, l, o, o, o,
+                        o, o, o, o, o, l, l, l, l, l, l, l, o, o, o, o,
+                        o, o, o, o, o, o, o, l, l, l, l, o, o, o, o, o,
+                        o, o, o, o, o, o, o, l, o, o, l, o, o, o, o, o,
+                        o, o, o, o, o, o, o, l, o, o, l, o, o, o, o, o,
+                        o, o, o, o, o, o, l, l, o, l, l, o, o, o, o, o,};
+
+uint16_t blue_1 [256] =  {o, l, o, o, o, l, l, o, l, o, l, o, o, o, l, l,
+                        o, l, o, o, o, l, o, o, l, o, l, o, o, o, l, o,
+                        o, l, o, l, l, l, o, o, l, l, o, o, l, l, l, o,
+                        o, o, o, l, o, l, o, o, o, l, o, o, l, o, l, o,
+                        o, l, o, l, l, l, o, o, o, o, l, o, l, l, l, o,
                         o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
                         o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
                         o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
@@ -91,22 +57,57 @@ uint16_t green [256] = {o, l, o, o, o, o, o, o, l, o, l, o, o, o, o, o,
                         o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
                         o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,};
 
-uint16_t blue [256] = {o, l, o, o, o, l, l, o, o, o, o, o, o, o, o, o,
-                       o, l, o, o, o, l, o, o, o, o, o, o, o, o, o, o,
-                       o, l, o, l, l, l, o, o, o, o, o, o, o, o, o, o,
-                       o, o, o, l, o, l, o, o, o, o, o, o, o, o, o, o,
-                       o, l, o, l, l, l, o, o, o, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
-                       o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,};
+uint16_t red_2 [256] = {o, l, o, o, o, l, l, o, l, o, l, o, o, o, l, l,
+                        o, l, o, o, o, l, o, o, l, o, l, o, o, o, l, o,
+                        o, l, o, l, l, l, o, o, l, l, o, o, l, l, l, o,
+                        o, o, o, l, o, l, o, o, o, l, o, o, l, o, l, o,
+                        o, l, o, l, l, l, o, o, o, o, l, o, l, l, l, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                        o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,};
+
+uint16_t green_2 [256] = {o, l, o, o, o, l, l, o, l, o, l, o, o, o, l, l,
+                          o, l, o, o, o, l, o, o, l, o, l, o, o, o, l, o,
+                          o, l, o, l, l, l, o, o, l, l, o, o, l, l, l, o,
+                          o, o, o, l, o, l, o, o, o, l, o, o, l, o, l, o,
+                          o, l, o, l, l, l, o, o, o, o, l, o, l, l, l, o,
+                          o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                          o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                          o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                          o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                          o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                          o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                          o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                          o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                          o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                          o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                          o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,};
+
+uint16_t blue_2 [256] =  {o, l, o, o, o, l, l, o, l, o, l, o, o, o, l, l,
+                          o, l, o, o, o, l, o, o, l, o, l, o, o, o, l, o,
+                          o, l, o, l, l, l, o, o, l, l, o, o, l, l, l, o,
+                          o, o, o, l, o, l, o, o, o, l, o, o, l, o, l, o,
+                          o, l, o, l, l, l, o, o, o, o, l, o, l, l, l, o,
+                          o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o,
+                          o, o, o, o, o, o, o, l, l, o, o, l, l, o, o, o,
+                          o, o, o, o, l, o, l, l, l, l, o, o, o, l, o, o,
+                          o, o, o, l, o, o, l, l, l, l, l, o, o, l, o, o,
+                          o, o, o, l, l, o, o, l, l, l, l, o, l, l, o, o,
+                          o, o, o, o, l, l, l, l, l, l, l, l, l, o, o, o,
+                          o, o, o, o, o, l, l, l, l, l, l, l, o, o, o, o,
+                          o, o, o, o, o, o, o, l, l, l, l, o, o, o, o, o,
+                          o, o, o, o, o, o, o, l, o, o, l, o, o, o, o, o,
+                          o, o, o, o, o, o, o, l, o, o, l, o, o, o, o, o,
+                          o, o, o, o, o, o, l, l, o, l, l, o, o, o, o, o,};;
+
 
 /*инициализация gpio для MBI5153*/
 void MBI_gpio_init()
@@ -132,10 +133,10 @@ void mbi_clock (uint8_t clock)
     {
         gpio_set_level(MBI_DCLK,1);
         gpio_set_level(MBI_GCLK,1);
-        ets_delay_us(clock_delay);
+        //ets_delay_us(clock_delay);
         gpio_set_level(MBI_DCLK,0);
         gpio_set_level(MBI_GCLK,0);
-        ets_delay_us(clock_delay);
+        //ets_delay_us(clock_delay);
     }
 }
 
@@ -205,7 +206,6 @@ void mbi_set_data (uint16_t data)
             gpio_set_level(MBI_LE,1);
             gpio_set_level(MBI_SDI,data_bit[i-1]);
             mbi_clock(1);
-            gpio_set_level(MBI_SDI,0);
             gpio_set_level(MBI_LE,0);
             latch = 0;
         }
@@ -213,10 +213,8 @@ void mbi_set_data (uint16_t data)
         {
             gpio_set_level(MBI_SDI,data_bit[i-1]);
             mbi_clock(1);
-            gpio_set_level(MBI_SDI,0);
         } 
     }
-    gpio_set_level(MBI_SDI,0);
 }
 
 /*команда предактивации - отправляется перед отправкой данных регистра конфигурации*/
@@ -243,8 +241,8 @@ void soft_reset()
     gpio_set_level(MBI_LE,0); 
 }
 
-/*отсылает данные для 1 линии строчной развертки*/
-void mbi_set_frame()
+/*отсылает данные для 1 кадра*/
+void mbi_set_frame(uint16_t red [256], uint16_t green [256], uint16_t blue [256])
 {
     for (size_t i = 0; i < 256; i++)
     {
